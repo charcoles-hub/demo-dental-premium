@@ -23,13 +23,12 @@ Nuevo repo **`demo-dental-premium`** (separado de `demo-dental-sereno`), para no
 
 ## Datos a personalizar por lead
 
-Solo identidad, ya disponible y limpia en el CSV de leads sin trabajo manual extra:
-
 - `negocio` (nombre del negocio)
 - `ciudad`
 - `telefono`
+- `foto` (URL de imagen real del negocio) — **opcional**, añadido tras la primera iteración: sin foto/señal visual real del rubro, la demo no se leía como "clínica dental" a simple vista. En la segunda ronda no todos los leads tendrán foto disponible (CSV/web/Maps), así que el diseño debe tener un fallback sólido cuando `foto` esté ausente, no solo el camino feliz con foto.
 
-No se incluye `PrimeraLinea` (queda en el email, no en la demo) ni contenido generado por IA por lead — eso es "personalización profunda", descartada para esta fase.
+No se incluye `PrimeraLinea` (queda en el email, no en la demo) ni contenido generado por IA por lead — eso sigue descartado para esta fase.
 
 ## Arquitectura técnica
 
@@ -41,10 +40,13 @@ No se incluye `PrimeraLinea` (queda en el email, no en la demo) ni contenido gen
 
 ## Brief creativo (para Fable)
 
-Libertad de diseño total: **sin** anclarse al look de `dental-sereno` actual, **sin** referencia externa impuesta por Sergio. Dos mandatos no negociables:
+**Primera iteración descartada (2026-07-14):** concepto "La página amanece" (hero nocturno + sol naciendo sobre horizonte-sonrisa, animación elaborada, mobile impecable, todas las reglas anti-slop respetadas). Técnicamente sólido y bien ejecutado, pero rechazado por Sergio: era puramente metafórico, sin ningún elemento que se leyera como "clínica dental" a simple vista, y no dejaba hueco a que cada negocio real se sintiera reconocible más allá del nombre.
 
-1. **Animación elaborada**: scroll storytelling, micro-interacciones, transiciones — el nivel "de otro mundo" pedido, no el scroll-reveal básico que ya tiene `landing-factory`.
-2. **Mobile impecable**: mobile-first real, no una versión responsive de compromiso. La mayoría de aperturas del email vendrán de móvil.
+Libertad de diseño total: **sin** anclarse al look de `dental-sereno` actual, **sin** referencia externa impuesta por Sergio. Mandatos no negociables (revisados):
+
+1. **Que se lea como clínica dental de un vistazo** — nuevo mandato explícito. La dirección artística no puede ser tan abstracta que pierda el rubro; usar la `foto` del negocio cuando exista como ancla visual real, y un fallback (iconografía/ilustración dental, no genérica) cuando no exista.
+2. **Animación elaborada**: scroll storytelling, micro-interacciones, transiciones — el nivel "de otro mundo" pedido, no el scroll-reveal básico que ya tiene `landing-factory`.
+3. **Mobile impecable**: mobile-first real, no una versión responsive de compromiso. La mayoría de aperturas del email vendrán de móvil.
 
 Restricción de estilo heredada del negocio (reglas anti-slop ya validadas, ver memoria `negocio_ia_autonomo`): nada de cian clínico, crema+serif+terracota, negro+verde-ácido, eyebrow en cada sección, ni tarjetas idénticas repetidas. Fuera de eso, criterio libre de Fable.
 
