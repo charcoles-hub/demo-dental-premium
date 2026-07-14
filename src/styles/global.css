@@ -1,10 +1,863 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Clínica Dental Aurora — "La página amanece"
+   Paleta: noche ciruela → rosa alba → oro → luz de día
+   Display: Bricolage Grotesque · Cuerpo: Instrument Sans
+   ============================================================ */
+
 :root {
   color-scheme: light;
+
+  --noche: #231a38;
+  --ciruela: #372a52;
+  --tinta: #2b2244;
+  --tinta-suave: #5c5374;
+  --rosa: #ef7d93;
+  --rosa-intenso: #e05f79;
+  --oro: #f5b14e;
+  --luz: #f7f4fa;
+  --luz-panel: #ffffff;
+  --lila-linea: #e3dcee;
+
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
+  --font-body: "Instrument Sans Variable", "Instrument Sans", system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: var(--font-body);
+  background: var(--luz);
+  color: var(--tinta);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--rosa);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 3px solid var(--rosa-intenso);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: min(100% - 2.5rem, 68rem);
+  margin-inline: auto;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0.85rem 1.7rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: transform 0.35s var(--ease-spring), box-shadow 0.35s ease, background 0.3s ease;
+  will-change: transform;
+}
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-sol {
+  background: var(--rosa-intenso);
+  color: #fff;
+  box-shadow: 0 10px 30px -10px rgba(224, 95, 121, 0.65);
+}
+.btn-sol:hover {
+  transform: translateY(-2px);
+  background: var(--rosa);
+  box-shadow: 0 16px 36px -10px rgba(224, 95, 121, 0.75);
+}
+.btn-sol .sol-icono {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+  transition: transform 0.4s var(--ease-spring);
+}
+.btn-sol:hover .sol-icono {
+  transform: translateY(-3px) rotate(20deg);
+}
+
+.btn-fantasma {
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+}
+.btn-fantasma:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================================
+   HERO — noche, aurora y sol naciente
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  background: var(--noche);
+  color: #fff;
+  overflow: clip;
+  isolation: isolate;
+}
+
+/* auroras: manchas de luz que derivan lentamente */
+.aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.55;
+  z-index: -2;
+  animation: deriva 16s ease-in-out infinite alternate;
+}
+.aurora-rosa {
+  width: 60vmax;
+  height: 42vmax;
+  left: -18vmax;
+  top: 26%;
+  background: radial-gradient(closest-side, rgba(239, 125, 147, 0.55), transparent 70%);
+}
+.aurora-oro {
+  width: 46vmax;
+  height: 36vmax;
+  right: -14vmax;
+  top: 8%;
+  background: radial-gradient(closest-side, rgba(245, 177, 78, 0.4), transparent 70%);
+  animation-delay: -8s;
+  animation-duration: 21s;
+}
+.aurora-violeta {
+  width: 52vmax;
+  height: 40vmax;
+  left: 22%;
+  bottom: -22vmax;
+  background: radial-gradient(closest-side, rgba(122, 88, 190, 0.5), transparent 70%);
+  animation-delay: -4s;
+  animation-duration: 26s;
+}
+@keyframes deriva {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(6vmax, -4vmax, 0) scale(1.15); }
+}
+
+/* grano fino para evitar el degradado plano */
+.grano {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+.hero-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 1.4rem;
+  animation: aparecer 0.9s var(--ease-out-soft) 1.4s backwards;
+}
+.marca {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+.marca svg {
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: none;
+}
+.tel-cabecera {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.55rem 1.1rem;
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+  white-space: nowrap;
+}
+.tel-cabecera:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-cuerpo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: 3.5rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 6vw + 1rem, 5.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  margin: 0 0 1.4rem;
+  max-width: 13ch;
+}
+.hero h1 .linea {
+  display: block;
+  overflow: clip;
+}
+.hero h1 .linea > span {
+  display: block;
+  animation: subir-linea 1s var(--ease-out-soft) backwards;
+}
+.hero h1 .linea:nth-child(1) > span { animation-delay: 0.15s; }
+.hero h1 .linea:nth-child(2) > span { animation-delay: 0.3s; }
+.hero h1 .linea:nth-child(3) > span { animation-delay: 0.45s; }
+.hero h1 .alba-palabra {
+  color: var(--oro);
+}
+@keyframes subir-linea {
+  from { transform: translateY(110%); }
+  to { transform: translateY(0); }
+}
+
+.hero-sub {
+  font-size: clamp(1.05rem, 1.3vw + 0.7rem, 1.25rem);
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 44ch;
+  margin: 0 0 2.2rem;
+  animation: aparecer 1s var(--ease-out-soft) 0.75s backwards;
+}
+.hero-sub strong {
+  color: var(--oro);
+  font-weight: 600;
+}
+
+.hero-acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+  animation: aparecer 1s var(--ease-out-soft) 1s backwards;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Horizonte-sonrisa: el sol nace sobre una curva que sonríe */
+.horizonte {
+  position: relative;
+  z-index: 0;
+  margin-top: auto;
+  display: block;
+  width: 100%;
+  height: clamp(110px, 18vw, 220px);
+  overflow: visible;
+}
+.horizonte .sol {
+  animation: sol-nace 2.2s var(--ease-out-soft) 0.5s backwards;
+  transform-origin: center;
+}
+@keyframes sol-nace {
+  from { transform: translateY(120px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.horizonte .curva {
+  stroke-dasharray: 1600;
+  stroke-dashoffset: 1600;
+  animation: trazar 2.4s var(--ease-out-soft) 0.8s forwards;
+}
+@keyframes trazar {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ============================================================
+   FRANJA DEL ALBA — el cielo se aclara al hacer scroll
+   ============================================================ */
+
+.alba {
+  background: linear-gradient(
+    to bottom,
+    var(--noche) 0%,
+    #47305c 26%,
+    #96566f 52%,
+    #e0907c 72%,
+    #f3d3b4 88%,
+    var(--luz) 100%
+  );
+  padding-block: clamp(5rem, 12vw, 9rem) clamp(3rem, 8vw, 5rem);
+  color: #fff;
+}
+
+.alba-frase {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw + 0.6rem, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  max-width: 22ch;
+  margin: 0 auto clamp(4rem, 10vw, 7rem);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  color: var(--tinta);
+}
+.cifra {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 1.4rem;
+  padding: 1.4rem 1.2rem;
+  text-align: center;
+}
+.cifra b {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--tinta);
+  font-variant-numeric: tabular-nums;
+}
+.cifra > span {
+  font-size: 0.9rem;
+  color: var(--tinta-suave);
+}
+
+/* ============================================================
+   Secciones de día
+   ============================================================ */
+
+section[id] {
+  scroll-margin-top: 2rem;
+}
+
+.seccion {
+  padding-block: clamp(4rem, 10vw, 7.5rem);
+}
+
+.titulo-seccion {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.2vw + 0.5rem, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.titulo-seccion .acento {
+  color: var(--rosa-intenso);
+}
+.entradilla {
+  font-size: 1.1rem;
+  color: var(--tinta-suave);
+  max-width: 52ch;
+  margin: 0 0 3rem;
+}
+
+/* ---------- Tratamientos (acordeón) ---------- */
+
+.tratamientos {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--lila-linea);
+}
+.tratamiento {
+  border-bottom: 1px solid var(--lila-linea);
+}
+.tratamiento summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.35rem 0.25rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw + 0.5rem, 1.7rem);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  transition: color 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.tratamiento summary::-webkit-details-marker { display: none; }
+.tratamiento summary .t-nombre {
+  transition: transform 0.35s var(--ease-out-soft);
+}
+.tratamiento summary:hover {
+  color: var(--rosa-intenso);
+}
+.tratamiento summary:hover .t-nombre {
+  transform: translateX(0.7rem);
+}
+.tratamiento summary .chip {
+  margin-left: auto;
+  flex: none;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--lila-linea);
+  display: grid;
+  place-items: center;
+  transition: transform 0.45s var(--ease-spring), background 0.3s ease, border-color 0.3s ease;
+}
+.tratamiento summary .chip svg {
+  width: 1rem;
+  height: 1rem;
+  stroke: var(--tinta);
+  transition: stroke 0.3s ease;
+}
+.tratamiento[open] summary {
+  color: var(--rosa-intenso);
+}
+.tratamiento[open] summary .chip {
+  transform: rotate(135deg);
+  background: var(--rosa-intenso);
+  border-color: var(--rosa-intenso);
+}
+.tratamiento[open] summary .chip svg {
+  stroke: #fff;
+}
+.tratamiento .panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s var(--ease-out-soft);
+}
+.tratamiento[open] .panel {
+  grid-template-rows: 1fr;
+}
+.tratamiento .panel > div {
+  overflow: clip;
+}
+.tratamiento .panel p {
+  margin: 0.2rem 0 1.6rem;
+  max-width: 56ch;
+  color: var(--tinta-suave);
+  font-size: 1.02rem;
+}
+
+/* ---------- Por qué Aurora (editorial alternado) ---------- */
+
+.porque {
+  background: var(--noche);
+  color: #fff;
+  border-radius: clamp(1.6rem, 4vw, 3rem);
+  padding: clamp(3rem, 7vw, 5.5rem) clamp(1.4rem, 5vw, 4.5rem);
+  position: relative;
+  overflow: clip;
+  isolation: isolate;
+}
+.porque .aurora {
+  opacity: 0.4;
+}
+.porque .titulo-seccion {
+  color: #fff;
+}
+.porque .entradilla {
+  color: rgba(255, 255, 255, 0.7);
+}
+.razones {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2.4rem, 5vw, 3.6rem);
+}
+.razon {
+  max-width: 34rem;
+}
+.razon:nth-child(2) {
+  align-self: flex-end;
+  text-align: right;
+}
+.razon:nth-child(2) .razon-titulo::after {
+  margin-left: auto;
+}
+.razon-titulo {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 2.4vw + 0.5rem, 2rem);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.6rem;
+  line-height: 1.15;
+}
+.razon-titulo::after {
+  content: "";
+  display: block;
+  width: 3.5rem;
+  height: 3px;
+  border-radius: 3px;
+  margin-top: 0.7rem;
+  background: linear-gradient(90deg, var(--oro), var(--rosa));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.9s var(--ease-out-soft) 0.25s;
+}
+.razon:nth-child(2) .razon-titulo::after {
+  transform-origin: right;
+}
+.revelado.visto .razon-titulo::after,
+.razon.visto .razon-titulo::after {
+  transform: scaleX(1);
+}
+.razon p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.02rem;
+}
+
+/* ---------- La primera visita (pasos con línea que se dibuja) ---------- */
+
+.pasos {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 2.6rem;
+  counter-reset: paso;
+}
+.pasos::before {
+  content: "";
+  position: absolute;
+  left: 0.72rem;
+  top: 0.5rem;
+  bottom: 2.5rem;
+  width: 3px;
+  border-radius: 3px;
+  background: var(--lila-linea);
+}
+.pasos .progreso {
+  position: absolute;
+  left: 0.72rem;
+  top: 0.5rem;
+  width: 3px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, var(--oro), var(--rosa-intenso));
+  height: calc(100% - 3rem);
+  transform: scaleY(var(--avance, 0));
+  transform-origin: top;
+  transition: transform 0.15s linear;
+}
+.paso {
+  position: relative;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+  counter-increment: paso;
+  max-width: 46rem;
+}
+.paso::before {
+  content: counter(paso);
+  position: absolute;
+  left: -2.6rem;
+  top: 0;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 50%;
+  background: var(--luz);
+  border: 2px solid var(--lila-linea);
+  color: var(--tinta-suave);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  display: grid;
+  place-items: center;
+  transition: background 0.4s ease, border-color 0.4s ease, color 0.4s ease, transform 0.4s var(--ease-spring);
+  z-index: 1;
+}
+.paso.encendido::before {
+  background: var(--rosa-intenso);
+  border-color: var(--rosa-intenso);
+  color: #fff;
+  transform: scale(1.15);
+}
+.paso h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw + 0.4rem, 1.6rem);
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+.paso p {
+  margin: 0;
+  color: var(--tinta-suave);
+}
+.paso .nota-gratis {
+  display: inline-block;
+  margin-left: 0.5rem;
+  background: var(--oro);
+  color: var(--tinta);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  vertical-align: 0.2em;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Testimonio ---------- */
+
+.testimonio {
+  text-align: center;
+  padding-block: clamp(4rem, 9vw, 6.5rem);
+}
+.testimonio blockquote {
+  margin: 0 auto;
+  max-width: 26ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.6vw + 0.5rem, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  text-wrap: balance;
+}
+.testimonio blockquote .comilla {
+  color: var(--rosa-intenso);
+}
+.testimonio figcaption {
+  margin-top: 1.6rem;
+  color: var(--tinta-suave);
+  font-size: 0.98rem;
+}
+.testimonio .estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+  margin-bottom: 1.6rem;
+}
+.testimonio .estrellas svg {
+  width: 1.3rem;
+  height: 1.3rem;
+  fill: var(--oro);
+}
+
+/* ---------- CTA final: atardecer ---------- */
+
+.cierre {
+  background:
+    radial-gradient(120% 90% at 50% 115%, rgba(245, 177, 78, 0.5), transparent 60%),
+    radial-gradient(100% 80% at 20% 100%, rgba(239, 125, 147, 0.45), transparent 55%),
+    var(--noche);
+  color: #fff;
+  text-align: center;
+  padding-block: clamp(5rem, 12vw, 8.5rem);
+  position: relative;
+  overflow: clip;
+}
+.cierre h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.5vw + 0.6rem, 3.8rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0 auto 1.2rem;
+  max-width: 18ch;
+  text-wrap: balance;
+}
+.cierre .cierre-sub {
+  color: rgba(255, 255, 255, 0.78);
+  max-width: 42ch;
+  margin: 0 auto 2.4rem;
+  font-size: 1.08rem;
+}
+.cierre .btn-sol {
+  font-size: 1.15rem;
+  padding: 1.05rem 2.2rem;
+}
+.cierre .datos {
+  margin-top: 2.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 2rem;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.95rem;
+}
+
+/* ---------- Footer ---------- */
+
+.pie {
+  background: #1a1329;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.9rem;
+  padding-block: 1.6rem;
+}
+.pie .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+}
+.pie a {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+}
+.pie a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
+/* ---------- Barra de llamada fija (móvil) ---------- */
+
+.barra-llamar {
+  position: fixed;
+  left: 0.9rem;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  z-index: 50;
+  transform: translateY(140%);
+  transition: transform 0.5s var(--ease-out-soft);
+}
+.barra-llamar.visible {
+  transform: translateY(0);
+}
+.barra-llamar a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  min-height: 3.4rem;
+  background: var(--rosa-intenso);
+  color: #fff;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 650;
+  font-size: 1.05rem;
+  border-radius: 999px;
+  box-shadow: 0 12px 34px -8px rgba(35, 26, 56, 0.55);
+}
+.barra-llamar a:active {
+  transform: scale(0.97);
+}
+.barra-llamar svg {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+}
+@media (min-width: 768px) {
+  .barra-llamar { display: none; }
+}
+
+/* ============================================================
+   Reveladas por scroll (IntersectionObserver añade .visto)
+   ============================================================ */
+
+.revelado {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.85s var(--ease-out-soft), transform 0.85s var(--ease-out-soft);
+  transition-delay: var(--retardo, 0s);
+}
+.revelado.visto {
+  opacity: 1;
+  transform: none;
+}
+.revelado-escala {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.9s var(--ease-out-soft), transform 0.9s var(--ease-out-soft);
+}
+.revelado-escala.visto {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   Móvil / ajustes responsivos
+   ============================================================ */
+
+@media (max-width: 640px) {
+  .cifras {
+    grid-template-columns: 1fr;
+    max-width: 22rem;
+    margin-inline: auto;
+  }
+  .cifra {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    text-align: left;
+    padding: 1.1rem 1.4rem;
+  }
+  .cifra > span { text-align: right; }
+  .razon:nth-child(2) {
+    align-self: flex-start;
+    text-align: left;
+  }
+  .razon:nth-child(2) .razon-titulo::after {
+    margin-left: 0;
+    transform-origin: left;
+  }
+  .hero-acciones .btn {
+    flex: 1 1 100%;
+  }
+  .cierre .datos {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* ============================================================
+   Movimiento reducido
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .revelado, .revelado-escala {
+    opacity: 1;
+    transform: none;
+  }
+  .horizonte .curva {
+    stroke-dashoffset: 0;
+  }
+  .pasos .progreso {
+    transform: scaleY(1);
+  }
 }

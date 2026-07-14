@@ -10,14 +10,408 @@ export function getStaticPaths() {
 }
 
 const { lead } = Astro.props as { lead: Lead };
+
+const telVisible = lead.telefono.replace(/(\d{3})(?=\d)/g, '$1 ').trim();
+const telHref = `tel:+34${lead.telefono}`;
+
+const tratamientos = [
+  {
+    nombre: 'Implantes dentales',
+    texto:
+      'Recupera las piezas que faltan con implantes de titanio y cirugía guiada por ordenador. Planificamos cada caso en 3D para que la intervención sea corta, precisa y con la mínima molestia posible.',
+  },
+  {
+    nombre: 'Ortodoncia invisible',
+    texto:
+      'Alineadores transparentes hechos a tu medida. Verás una simulación del resultado final antes de empezar, y en cada revisión comprobamos que el plan avanza como estaba previsto.',
+  },
+  {
+    nombre: 'Estética dental',
+    texto:
+      'Carillas, blanqueamiento y remodelado de la sonrisa. Diseñamos el cambio contigo delante de la pantalla, diente a diente, para que el resultado sea natural: que se note el cambio, no el trabajo.',
+  },
+  {
+    nombre: 'Odontología general',
+    texto:
+      'Revisiones, limpiezas, empastes y endodoncias. La base de una boca sana es venir una vez al año, no cuando ya duele. Te avisamos nosotros de cuándo toca.',
+  },
+  {
+    nombre: 'Odontopediatría',
+    texto:
+      'Primeras visitas pensadas para que los niños salgan queriendo volver. Sin batas que asusten, con tiempo para explicarles cada aparato y selladores para prevenir caries antes de que aparezcan.',
+  },
+  {
+    nombre: 'Urgencias dentales',
+    texto:
+      'Un diente roto o un dolor que no te deja dormir no pueden esperar a la semana que viene. Llámanos por la mañana y buscamos un hueco para verte hoy mismo.',
+  },
+];
+
+const razones = [
+  {
+    titulo: 'Te lo explicamos todo antes de tocar nada',
+    texto:
+      'Presupuesto cerrado y por escrito desde la primera visita. Sabrás qué se hace, por qué y cuánto cuesta, sin sorpresas a mitad de tratamiento.',
+  },
+  {
+    titulo: 'Tecnología que se nota en cada visita',
+    texto:
+      'Escáner intraoral sin moldes incómodos, radiografía digital de baja dosis y planificación 3D. Menos tiempo en el sillón y diagnósticos más precisos.',
+  },
+  {
+    titulo: 'Sin dolor. De verdad.',
+    texto:
+      'Anestesia asistida y sedación consciente para quien lo necesita. Si llevas años evitando al dentista por miedo, este es el sitio donde dejar de evitarlo.',
+  },
+];
+
+const pasos = [
+  {
+    titulo: 'Nos llamas',
+    texto: 'Buscamos el hueco que mejor te venga, incluso a última hora de la tarde.',
+    gratis: false,
+  },
+  {
+    titulo: 'Te conocemos',
+    texto: 'Revisión completa con escáner 3D y radiografía digital, en unos 30 minutos.',
+    gratis: true,
+  },
+  {
+    titulo: 'Plan sobre la mesa',
+    texto: 'Diagnóstico claro y presupuesto cerrado, por escrito. Te lo llevas a casa para pensarlo.',
+    gratis: false,
+  },
+  {
+    titulo: 'Empezamos cuando tú digas',
+    texto: 'Sin prisas ni compromisos. El tratamiento arranca solo cuando lo tengas claro.',
+    gratis: false,
+  },
+];
 ---
 <Layout
-  title={`${lead.negocio} · Odontología en ${lead.ciudad}`}
-  description={`Sonríe con confianza. ${lead.negocio} te espera en ${lead.ciudad}.`}
+  title={`${lead.negocio} · Dentista en ${lead.ciudad}`}
+  description={`${lead.negocio}, tu dentista en ${lead.ciudad}. Primera visita y estudio 3D gratis. Llama al ${telVisible}.`}
 >
   <main>
-    <h1>{lead.negocio}</h1>
-    <p>{lead.ciudad}</p>
-    <p><a href={`tel:${lead.telefono}`}>{lead.telefono}</a></p>
+    <!-- ================= HERO ================= -->
+    <header class="hero">
+      <div class="aurora aurora-rosa" aria-hidden="true"></div>
+      <div class="aurora aurora-oro" aria-hidden="true"></div>
+      <div class="aurora aurora-violeta" aria-hidden="true"></div>
+      <div class="grano" aria-hidden="true"></div>
+
+      <div class="wrap hero-cabecera">
+        <a class="marca" href="#top" aria-label={lead.negocio}>
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <circle cx="32" cy="29" r="11" fill="#F5B14E"></circle>
+            <path d="M12 44q20 13 40 0" stroke="#EF7D93" stroke-width="5.5" fill="none" stroke-linecap="round"></path>
+          </svg>
+          {lead.negocio}
+        </a>
+        <a class="tel-cabecera" href={telHref}>{telVisible}</a>
+      </div>
+
+      <div class="wrap hero-cuerpo">
+        <h1>
+          <span class="linea"><span>Tu mejor sonrisa</span></span>
+          <span class="linea"><span>está a punto</span></span>
+          <span class="linea"><span>de <span class="alba-palabra">salir</span>.</span></span>
+        </h1>
+        <p class="hero-sub">
+          En {lead.negocio} tratamos tu boca como nos gustaría que trataran la
+          nuestra: sin prisa, sin dolor y sin letra pequeña.{' '}
+          <strong>Primera visita y estudio 3D gratis</strong>, en el centro de {lead.ciudad}.
+        </p>
+        <div class="hero-acciones">
+          <a class="btn btn-sol" href={telHref}>
+            <svg class="sol-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="14" r="4" fill="currentColor" stroke="none"></circle>
+              <path d="M12 4v3M4.9 7.9l2.1 2.1M19.1 7.9 17 10M3 14h2M19 14h2"></path>
+            </svg>
+            Reserva tu primera visita
+          </a>
+          <a class="btn btn-fantasma" href="#tratamientos">Ver tratamientos</a>
+        </div>
+      </div>
+
+      <svg class="horizonte" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+        <defs>
+          <linearGradient id="grad-curva" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#F5B14E" stop-opacity="0"></stop>
+            <stop offset="0.45" stop-color="#F5B14E"></stop>
+            <stop offset="0.72" stop-color="#EF7D93"></stop>
+            <stop offset="1" stop-color="#EF7D93" stop-opacity="0"></stop>
+          </linearGradient>
+          <radialGradient id="grad-halo">
+            <stop offset="0" stop-color="#F5B14E" stop-opacity="0.55"></stop>
+            <stop offset="1" stop-color="#F5B14E" stop-opacity="0"></stop>
+          </radialGradient>
+        </defs>
+        <g class="sol">
+          <circle cx="720" cy="158" r="130" fill="url(#grad-halo)"></circle>
+          <circle cx="720" cy="158" r="54" fill="#F5B14E"></circle>
+        </g>
+        <path fill="var(--noche)" d="M0 118 Q 720 252 1440 118 L 1440 240 L 0 240 Z"></path>
+        <path class="curva" d="M0 118 Q 720 252 1440 118" fill="none" stroke="url(#grad-curva)" stroke-width="3" stroke-linecap="round"></path>
+      </svg>
+    </header>
+
+    <!-- ================= FRANJA DEL ALBA ================= -->
+    <section class="alba" id="alba" aria-label="Nuestra filosofía">
+      <div class="wrap">
+        <p class="alba-frase revelado">
+          Un buen dentista no se nota en la consulta. Se nota cada vez que
+          sonríes sin pensarlo.
+        </p>
+        <ul class="cifras">
+          <li class="cifra revelado" style="--retardo: 0s">
+            <b><span data-cifra="15">0</span>&nbsp;años</b>
+            <span>cuidando sonrisas en {lead.ciudad}</span>
+          </li>
+          <li class="cifra revelado" style="--retardo: 0.12s">
+            <b><span data-cifra="4.9" data-decimales="1">0</span>&nbsp;★</b>
+            <span>valoración media de nuestros pacientes</span>
+          </li>
+          <li class="cifra revelado" style="--retardo: 0.24s">
+            <b>+<span data-cifra="3200">0</span></b>
+            <span>pacientes que hoy sonríen más</span>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= TRATAMIENTOS ================= -->
+    <section class="seccion" id="tratamientos">
+      <div class="wrap">
+        <h2 class="titulo-seccion revelado">
+          Todo lo que tu boca puede necesitar, <span class="acento">en un mismo sitio</span>
+        </h2>
+        <p class="entradilla revelado">
+          De la limpieza anual al implante más complejo, con el mismo equipo de
+          siempre y sin mandarte de clínica en clínica.
+        </p>
+        <ul class="tratamientos revelado">
+          {tratamientos.map((t, i) => (
+            <li>
+              <details class="tratamiento" name="tratamientos" open={i === 0}>
+                <summary>
+                  <span class="t-nombre">{t.nombre}</span>
+                  <span class="chip" aria-hidden="true">
+                    <svg viewBox="0 0 16 16" fill="none" stroke-width="2" stroke-linecap="round">
+                      <path d="M8 2v12M2 8h12"></path>
+                    </svg>
+                  </span>
+                </summary>
+                <div class="panel"><div><p>{t.texto}</p></div></div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= POR QUÉ NOSOTROS ================= -->
+    <section class="seccion" style="padding-top: 0" aria-label="Por qué elegirnos">
+      <div class="wrap">
+        <div class="porque revelado-escala">
+          <div class="aurora aurora-rosa" aria-hidden="true"></div>
+          <div class="aurora aurora-oro" aria-hidden="true"></div>
+          <h2 class="titulo-seccion">Lo que hacemos distinto</h2>
+          <p class="entradilla">
+            Hay muchas clínicas en {lead.ciudad}. Estas son las tres razones por
+            las que nuestros pacientes se quedan.
+          </p>
+          <ul class="razones">
+            {razones.map((r) => (
+              <li class="razon revelado">
+                <h3 class="razon-titulo">{r.titulo}</h3>
+                <p>{r.texto}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PRIMERA VISITA ================= -->
+    <section class="seccion" id="visita" style="padding-top: 0">
+      <div class="wrap">
+        <h2 class="titulo-seccion revelado">Tu primera visita, paso a paso</h2>
+        <p class="entradilla revelado">
+          Sabemos que llamar al dentista cuesta. Por eso el primer paso no te
+          compromete a nada.
+        </p>
+        <ol class="pasos">
+          <div class="progreso" aria-hidden="true"></div>
+          {pasos.map((p) => (
+            <li class="paso revelado">
+              <h3>
+                {p.titulo}
+                {p.gratis && <span class="nota-gratis">gratis</span>}
+              </h3>
+              <p>{p.texto}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- ================= TESTIMONIO ================= -->
+    <section class="testimonio" aria-label="Opiniones">
+      <div class="wrap">
+        <figure class="revelado-escala" style="margin: 0">
+          <div class="estrellas" aria-label="5 estrellas">
+            {[1, 2, 3, 4, 5].map(() => (
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"></path>
+              </svg>
+            ))}
+          </div>
+          <blockquote>
+            <span class="comilla">«</span>Llevaba años sin pisar un dentista por
+            miedo. Aquí me trataron sin prisa y sin dolor. Hoy salgo en todas
+            las fotos sonriendo.<span class="comilla">»</span>
+          </blockquote>
+          <figcaption>Marta G. — paciente de {lead.negocio}</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= CIERRE ================= -->
+    <section class="cierre" id="cita">
+      <div class="wrap">
+        <h2 class="revelado">Mañana puedes despertarte con otra sonrisa</h2>
+        <p class="cierre-sub revelado">
+          La primera visita y el estudio 3D son gratis. El resto, decisión tuya.
+        </p>
+        <div class="revelado" style="--retardo: 0.15s">
+          <a class="btn btn-sol" href={telHref}>
+            <svg class="sol-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="14" r="4" fill="currentColor" stroke="none"></circle>
+              <path d="M12 4v3M4.9 7.9l2.1 2.1M19.1 7.9 17 10M3 14h2M19 14h2"></path>
+            </svg>
+            Llama al {telVisible}
+          </a>
+        </div>
+        <div class="datos">
+          <span>Lunes a viernes · 9:00 – 20:00</span>
+          <span>En el centro de {lead.ciudad}</span>
+          <span>Urgencias atendidas en el día</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="pie">
+      <div class="wrap">
+        <span>© {new Date().getFullYear()} {lead.negocio} · {lead.ciudad}</span>
+        <a href={telHref}>{telVisible}</a>
+      </div>
+    </footer>
+
+    <!-- Barra de llamada fija en móvil -->
+    <div class="barra-llamar" id="barra-llamar">
+      <a href={telHref}>
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.6.1.3 0 .7-.2 1l-2.3 2.2z"></path>
+        </svg>
+        Llamar ahora · {telVisible}
+      </a>
+    </div>
   </main>
+
+  <script>
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ---- contadores ---- */
+    const formatea = (v: number, dec: number) =>
+      v.toLocaleString('es-ES', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+
+    function cuenta(el: HTMLElement) {
+      const fin = parseFloat(el.dataset.cifra || '0');
+      const dec = parseInt(el.dataset.decimales || '0');
+      if (reduceMotion) {
+        el.textContent = formatea(fin, dec);
+        return;
+      }
+      const dur = 1400;
+      const t0 = performance.now();
+      const paso = (t: number) => {
+        const p = Math.min((t - t0) / dur, 1);
+        const suave = 1 - Math.pow(1 - p, 4);
+        el.textContent = formatea(fin * suave, dec);
+        if (p < 1) requestAnimationFrame(paso);
+      };
+      requestAnimationFrame(paso);
+    }
+
+    /* ---- reveladas por scroll ---- */
+    const observador = new IntersectionObserver(
+      (entradas) => {
+        for (const e of entradas) {
+          if (!e.isIntersecting) continue;
+          e.target.classList.add('visto');
+          e.target.querySelectorAll<HTMLElement>('[data-cifra]').forEach(cuenta);
+          observador.unobserve(e.target);
+        }
+      },
+      { threshold: 0.18, rootMargin: '0px 0px -5% 0px' }
+    );
+    document.querySelectorAll('.revelado, .revelado-escala').forEach((el) => observador.observe(el));
+
+    /* ---- línea de progreso de los pasos ---- */
+    const listaPasos = document.querySelector<HTMLElement>('.pasos');
+    const progreso = document.querySelector<HTMLElement>('.pasos .progreso');
+    const pasos = Array.from(document.querySelectorAll<HTMLElement>('.paso'));
+    let pendiente = false;
+
+    function actualizaPasos() {
+      pendiente = false;
+      if (!listaPasos || !progreso) return;
+      const r = listaPasos.getBoundingClientRect();
+      const disparo = window.innerHeight * 0.65;
+      const avance = Math.min(Math.max((disparo - r.top) / r.height, 0), 1);
+      progreso.style.setProperty('--avance', String(avance));
+      for (const p of pasos) {
+        p.classList.toggle('encendido', p.getBoundingClientRect().top < disparo);
+      }
+    }
+
+    /* ---- barra de llamada fija ---- */
+    const barra = document.getElementById('barra-llamar');
+    const hero = document.querySelector('.hero');
+    const cierre = document.querySelector('.cierre');
+    let heroVisible = true;
+    let cierreVisible = false;
+
+    function actualizaBarra() {
+      barra?.classList.toggle('visible', !heroVisible && !cierreVisible);
+    }
+    if (hero && cierre && barra) {
+      new IntersectionObserver(
+        ([e]) => { heroVisible = e.isIntersecting; actualizaBarra(); },
+        { threshold: 0.1 }
+      ).observe(hero);
+      new IntersectionObserver(
+        ([e]) => { cierreVisible = e.isIntersecting; actualizaBarra(); },
+        { threshold: 0.1 }
+      ).observe(cierre);
+    }
+
+    if (reduceMotion) {
+      progreso?.style.setProperty('--avance', '1');
+      pasos.forEach((p) => p.classList.add('encendido'));
+    } else {
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (!pendiente) {
+            pendiente = true;
+            requestAnimationFrame(actualizaPasos);
+          }
+        },
+        { passive: true }
+      );
+      actualizaPasos();
+    }
+  </script>
 </Layout>
