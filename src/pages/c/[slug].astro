@@ -1,0 +1,23 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { leads, type Lead } from '../../data/leads';
+
+export function getStaticPaths() {
+  return leads.map((lead) => ({
+    params: { slug: lead.slug },
+    props: { lead },
+  }));
+}
+
+const { lead } = Astro.props as { lead: Lead };
+---
+<Layout
+  title={`${lead.negocio} · Odontología en ${lead.ciudad}`}
+  description={`Sonríe con confianza. ${lead.negocio} te espera en ${lead.ciudad}.`}
+>
+  <main>
+    <h1>{lead.negocio}</h1>
+    <p>{lead.ciudad}</p>
+    <p><a href={`tel:${lead.telefono}`}>{lead.telefono}</a></p>
+  </main>
+</Layout>
